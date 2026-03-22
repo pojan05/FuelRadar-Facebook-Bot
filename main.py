@@ -108,11 +108,9 @@ def main():
         header = "📢 [รายงานสรุปประจำวัน] น้ำมันอินทร์บุรี" if is_morning_report else "🔔 [อัปเดตสถานะน้ำมัน] อินทร์บุรี"
         footer = f"\n\n📊 ตรวจสอบอัตโนมัติเมื่อ: {thai_now_str}\n#น้ำมันอินทร์บุรี #อินทร์บุรีรอดมั้ย"
         
-        for i in range(0, len(updates), 4):
-            chunk = updates[i:i+4]
-            full_post = f"{header}\n\n" + "\n\n---\n\n".join(chunk) + footer
-            post_to_make(full_post)
-            time.sleep(2) # ส่งให้ Make ไม่ต้องรอนานเท่า FB
+        # จุดที่แก้: รวมข้อมูลทั้งหมดเป็น 1 โพสต์ยาวๆ
+        full_post = f"{header}\n\n" + "\n\n---\n\n".join(updates) + footer
+        post_to_make(full_post)
             
         with open("data_fb.json", "w", encoding="utf-8") as f:
             json.dump(current_data, f, ensure_ascii=False, indent=2)
