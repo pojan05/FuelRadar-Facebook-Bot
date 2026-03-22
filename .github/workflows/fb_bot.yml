@@ -1,0 +1,35 @@
+name: Facebook Fuel Bot
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # รันทุก 10 นาที
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-fb-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install Tools
+        run: pip install requests beautifulsoup4 selenium webdriver-manager pytz
+        
+      - name: Run Python Code
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+        run: python main.py
+        
+      - name: Save Data State
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add data_fb.json
+          git commit -m "update facebook data state" || echo "No changes"
+          git push
