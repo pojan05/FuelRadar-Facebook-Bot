@@ -18,11 +18,12 @@ jobs:
           python-version: '3.10'
           
       - name: Install Tools
-        run: pip install requests beautifulsoup4 selenium webdriver-manager pytz
+        run: pip install requests beautifulsoup4 selenium webdriver-manager pytz Pillow google-generativeai
         
       - name: Run Python Code
         env:
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python main.py
         
       - name: Save Data State
